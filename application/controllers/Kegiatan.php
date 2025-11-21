@@ -13,6 +13,16 @@ class Kegiatan extends CI_Controller {
 
     public function index()
     {
+        $level = $this->session->userdata('level');
+
+        if ($level == 'mahasiswa') {
+            $this->load->view('templates/header');
+            $this->load->view('templates/sidebar');
+            $this->load->view('no_access');
+            $this->load->view('templates/footer');
+            return;
+        }
+        
         $data['kegiatan'] = $this->Kegiatan_model->getAll();
         $this->load->view('templates/header');
         $this->load->view('templates/sidebar');
@@ -20,13 +30,18 @@ class Kegiatan extends CI_Controller {
         $this->load->view('templates/footer');
     }
 
-    public function create()
-    {
-        $this->load->view('kegiatan/create');
-    }
-
     public function store()
     {
+        $level = $this->session->userdata('level');
+
+        if ($level == 'mahasiswa') {
+            $this->load->view('templates/header');
+            $this->load->view('templates/sidebar');
+            $this->load->view('no_access');
+            $this->load->view('templates/footer');
+            return;
+        }
+
         $data = [
             'kegiatan' => $this->input->post('kegiatan')
         ];
@@ -38,12 +53,32 @@ class Kegiatan extends CI_Controller {
 
     public function edit($id)
     {
+        $level = $this->session->userdata('level');
+
+        if ($level == 'mahasiswa') {
+            $this->load->view('templates/header');
+            $this->load->view('templates/sidebar');
+            $this->load->view('no_access');
+            $this->load->view('templates/footer');
+            return;
+        }
+
         $data = $this->Kegiatan_model->getById($id);
         echo json_encode($data);
     }
 
     public function update($id)
     {
+        $level = $this->session->userdata('level');
+
+        if ($level == 'mahasiswa') {
+            $this->load->view('templates/header');
+            $this->load->view('templates/sidebar');
+            $this->load->view('no_access');
+            $this->load->view('templates/footer');
+            return;
+        }
+
         $data = [
             'kegiatan' => $this->input->post('kegiatan')
         ];
@@ -55,6 +90,16 @@ class Kegiatan extends CI_Controller {
 
     public function delete($id)
     {
+        $level = $this->session->userdata('level');
+
+        if ($level == 'mahasiswa') {
+            $this->load->view('templates/header');
+            $this->load->view('templates/sidebar');
+            $this->load->view('no_access');
+            $this->load->view('templates/footer');
+            return;
+        }
+        
         $this->Kegiatan_model->delete($id);
         redirect('kegiatan');
     }

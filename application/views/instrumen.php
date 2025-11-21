@@ -56,7 +56,7 @@
                         <div class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Edit Kegiatan</h5>
+                                    <h5 class="modal-title">Edit Instrumen</h5>
                                     <button type="button" class="close rounded-pill" data-bs-dismiss="modal"
                                         aria-label="Close">
                                         <i data-feather="x"></i>
@@ -92,7 +92,7 @@
                         <div class="modal-dialog modal-dialog-centered modal-dialog-centered modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Konfirmasi Hapus Kegiatan</h5>
+                                    <h5 class="modal-title">Konfirmasi Hapus Instrumen</h5>
                                     <button type="button" class="close rounded-pill" data-bs-dismiss="modal"
                                         aria-label="Close">
                                         <i data-feather="x"></i>
@@ -101,7 +101,7 @@
                                 <form method="POST" id="formDelete">
                                     <div class="modal-body">
                                         <div class="form-group">
-                                            <p>Yakin ingin menghapus kegiatan ini?</p>
+                                            <p>Yakin ingin menghapus instrumen ini?</p>
                                         </div>
                                     </div>
                                     <div class="modal-footer">

@@ -99,5 +99,17 @@ $route['sub-kegiatan-detail/file_detail/update/(:num)'] = 'FileDetail/update/$1'
 $route['sub-kegiatan-detail/file_detail/delete/(:num)'] = 'FileDetail/delete/$1';
 $route['sub-kegiatan-detail/file_detail/view/(:num)'] = 'FileDetail/view/$1';
 
+$route['akses'] = 'akses/index';
+$route['akses/insert'] = 'akses/insert';
+$route['akses/update'] = 'akses/update';
+$route['akses/delete/(:any)'] = 'akses/delete/$1';
+
+$route['rekapitulasi'] = 'explorer/index';
+$route['rekapitulasi/subkegiatan/(:num)'] = 'explorer/subkegiatan/$1';
+$route['rekapitulasi/subkegiatandetail/(:num)'] = 'explorer/subkegiatandetail/$1';
+$route['rekapitulasi/file/(:num)'] = 'explorer/file/$1';
+$route['rekapitulasi/file_detail/(:num)'] = 'explorer/file_detail/$1';
+$route['rekapitulasi/open_file/(:num)'] = 'explorer/open_file/$1';
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

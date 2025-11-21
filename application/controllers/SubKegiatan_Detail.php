@@ -70,9 +70,14 @@ class Subkegiatan_detail extends CI_Controller
             $instrumen
         );
 
-        $data['subkegiatan'] = $this->db->get('subkegiatan')->result();
+        $this->db->select('subkegiatan.*, kegiatan.kegiatan AS nama_kegiatan');
+        $this->db->from('subkegiatan');
+        $this->db->join('kegiatan', 'kegiatan.idkegiatan = subkegiatan.idkegiatan', 'left');
+
+        $data['subkegiatan'] = $this->db->get()->result();
         $data['instrumen']   = $this->db->get('instrumen')->result();
         $data['offset'] = $offset + 1;
+
         $data['pagination'] = $this->pagination->create_links();
 
         $data['filter_q']   = $q;
@@ -155,7 +160,7 @@ class Subkegiatan_detail extends CI_Controller
     public function delete($id)
     {
         $this->db->trans_start();
-        
+
         $this->Subkegiatan_detail_model->delete_file_detail_by_sub($id);
         $this->Subkegiatan_detail_model->delete_file_by_sub($id);
         $this->Subkegiatan_detail_model->delete_instrumen($id);

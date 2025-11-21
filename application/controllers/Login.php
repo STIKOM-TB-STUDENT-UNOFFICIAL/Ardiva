@@ -4,6 +4,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 #[\AllowDynamicProperties]
 class Login extends CI_Controller {
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->database();
+        $this->load->library('session');
+    }
+
     public function index()
     {
         if ($this->session->userdata('logged_in')) {
@@ -15,13 +22,33 @@ class Login extends CI_Controller {
 
     public function proses()
     {
-        $username = $this->input->post('username');
-        $password = $this->input->post('password');
+        $username = $this->input->post('username', TRUE);
+        $password = md5($this->input->post('password', TRUE));
 
-        if ($username == 'admin' && $password == '123') {
-            $this->session->set_userdata('logged_in', TRUE);
+        $user = $this->db->get_where('login_system', [
+            'userid' => $username,
+            'password' => $password,
+            'blokir' => 'N'
+        ])->row();
+
+        if ($user) {
+
+            $this->session->set_userdata([
+                'logged_in'     => TRUE,
+                'userid'        => $user->userid,
+                'nama_lengkap'  => $user->nama_lengkap,
+                'level'         => $user->level
+            ]);
+
+            $this->db->where('userid', $user->userid)
+                     ->update('login_system', [
+                        'last_login' => date('Y-m-d H:i:s')
+                     ]);
+
             redirect('kegiatan');
+
         } else {
+            $this->session->set_flashdata('error', 'Username atau password salah');
             redirect('login');
         }
     }

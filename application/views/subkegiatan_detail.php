@@ -28,7 +28,7 @@
                                         <select name="idsubkegiatan" class="form-control" required>
                                             <option value="">-- Pilih Kegiatan --</option>
                                             <?php foreach ($subkegiatan as $s): ?>
-                                                <option value="<?= $s->idsubkegiatan ?>"><?= $s->namasubkegiatan ?></option>
+                                                <option value="<?= $s->idsubkegiatan ?>"><?= $s->nama_kegiatan ?> - <?= $s->namasubkegiatan ?></option>
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
@@ -69,7 +69,7 @@
                                         <select name="idsubkegiatan" id="editSubkegiatan" class="form-select" required>
                                             <?php foreach ($subkegiatan as $s): ?>
                                                 <option value="<?= $s->idsubkegiatan ?>">
-                                                    <?= $s->namasubkegiatan ?>
+                                                    <?= $s->nama_kegiatan ?> - <?= $s->namasubkegiatan ?>
                                                 </option>
                                             <?php endforeach; ?>
                                         </select>

@@ -102,10 +102,22 @@
                         <span>Instrumen</span>
                     </a>
                 </li>
+                <li class="sidebar-item">
+                    <a href="/rekapitulasi" class="sidebar-link">
+                        <i class="bi bi-card-checklist"></i>
+                        <span>Rekapitulasi</span>
+                    </a>
+                </li>
                 <li class="sidebar-item ">
                     <a href="/tahun-akademik" class="sidebar-link">
                         <i class="bi bi-calendar-check"></i>
                         <span>Tahun Akademik</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="/akses" class="sidebar-link">
+                        <i class="bi bi-key"></i>
+                        <span>Akses</span>
                     </a>
                 </li>
                 <li class="sidebar-item">

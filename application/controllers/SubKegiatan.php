@@ -13,7 +13,7 @@ class Subkegiatan extends CI_Controller
     }
 
     public function index()
-    {
+    {   
         $data['subkegiatan'] = $this->Subkegiatan_model->get_all();
         $data['kegiatan'] = $this->Subkegiatan_model->get_kegiatan();
         $this->load->view('templates/header');
@@ -22,11 +22,6 @@ class Subkegiatan extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function create()
-    {
-        $data['kegiatan'] = $this->Subkegiatan_model->get_kegiatan();
-        $this->load->view('subkegiatan/create', $data);
-    }
 
     public function store()
     {
