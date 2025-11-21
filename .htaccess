@@ -1,0 +1,15 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Biarkan folder assets berjalan normal (tanpa routing CI)
+    RewriteCond %{REQUEST_URI} ^/assets/ [NC]
+    RewriteRule .* - [L]
+
+    # Biarkan file/folder yang memang ada (gambar, uploads dll)
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+
+    # Routing ke index.php
+    RewriteRule ^(.*)$ index.php/$1 [L]
+</IfModule>
