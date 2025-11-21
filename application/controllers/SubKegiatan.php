@@ -31,7 +31,7 @@ class Subkegiatan extends CI_Controller
         ];
 
         $this->Subkegiatan_model->insert($data);
-        redirect('subkegiatan');
+        redirect('sub-kegiatan');
     }
 
     public function edit($id)
@@ -49,12 +49,12 @@ class Subkegiatan extends CI_Controller
         ];
 
         $this->Subkegiatan_model->update($id, $data);
-        redirect('subkegiatan');
+        redirect('sub-kegiatan');
     }
 
     public function delete($id)
     {
         $this->Subkegiatan_model->delete($id);
-        redirect('subkegiatan');
+        redirect('sub-kegiatan');
     }
 }

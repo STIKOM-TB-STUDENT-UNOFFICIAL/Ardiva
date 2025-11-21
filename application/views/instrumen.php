@@ -26,7 +26,7 @@
                                         <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form action="<?= site_url('instrumen/store'); ?>" method="POST">
+                                <form action="<?= base_url('instrumen/store'); ?>" method="POST">
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <label>Nama Instrumen</label>
@@ -62,7 +62,7 @@
                                         <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form action="<?= site_url('kegiatan/update'); ?>" method="POST" id="formEdit">
+                                <form action="<?= base_url('kegiatan/update'); ?>" method="POST" id="formEdit">
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <label>Nama Instrumen</label>
@@ -154,9 +154,9 @@
     </div>
     <script>
         function editInstrumen(id) {
-            document.getElementById("formEdit").action = "<?= site_url('instrumen/update/'); ?>" + id;
+            document.getElementById("formEdit").action = "<?= base_url('instrumen/update/'); ?>" + id;
 
-            fetch("<?= site_url('instrumen/edit/'); ?>" + id)
+            fetch("<?= base_url('instrumen/edit/'); ?>" + id)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data)
@@ -169,7 +169,7 @@
         }
 
         function confirmDelete(id) {
-            document.getElementById("formDelete").action = "<?= site_url('instrumen/delete/'); ?>" + id;
+            document.getElementById("formDelete").action = "<?= base_url('instrumen/delete/'); ?>" + id;
 
             let modalEl = document.getElementById('modalDelete');
             let modal = new bootstrap.Modal(modalEl);

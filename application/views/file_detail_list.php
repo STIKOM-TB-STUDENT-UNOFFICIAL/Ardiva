@@ -17,7 +17,7 @@
                     </button>
                     <div class="modal fade text-left modal-borderless" id="modalTambah" tabindex="-1"
                         role="dialog" aria-labelledby="modalTambah" aria-hidden="true">
-                        <form class="modal-dialog modal-dialog-scrollable" action="<?= site_url('sub-kegiatan-detail/' . $idsub . '/files/' . $idfile . '/add') ?>" method="post" enctype="multipart/form-data">
+                        <form class="modal-dialog modal-dialog-scrollable" action="<?= base_url('sub-kegiatan-detail/' . $idsub . '/files/' . $idfile . '/add') ?>" method="post" enctype="multipart/form-data">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Tambah File</h5>
@@ -47,7 +47,7 @@
                     </div>
                     <div class="modal fade text-left modal-borderless" id="modalEditDetail" tabindex="-1"
                         role="dialog" aria-labelledby="modalTambah" aria-hidden="true">
-                        <form id="formEditDetail" class="modal-dialog modal-dialog-scrollable" action="<?= site_url('sub-kegiatan-detail/' . $idsub . '/files/' . $idfile . '/add') ?>" method="post" enctype="multipart/form-data">
+                        <form id="formEditDetail" class="modal-dialog modal-dialog-scrollable" action="<?= base_url('sub-kegiatan-detail/' . $idsub . '/files/' . $idfile . '/add') ?>" method="post" enctype="multipart/form-data">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Edit File</h5>
@@ -131,7 +131,7 @@
                                             <td class="text-bold-500"><?= $no++ ?></td>
                                             <td class="text-bold-500"><?= htmlspecialchars($d->filename) ?></td>
                                             <td class="text-bold-500 d-flex gap-1">
-                                                <a href="<?= site_url('sub-kegiatan-detail/file_detail/view/' . $d->id_file_detail) ?>" target="_blank" class="btn btn-success">Download</a>
+                                                <a href="<?= base_url('sub-kegiatan-detail/file_detail/view/' . $d->id_file_detail) ?>" target="_blank" class="btn btn-success">Download</a>
                                                 <button onclick="openEdit(<?= $d->id_file_detail ?>, '<?= rawurlencode($d->filename) ?>')" class="btn btn-primary">
                                                     Edit
                                                 </button>
@@ -154,7 +154,7 @@
             let filename = decodeURIComponent(filenameEncoded);
             let form = document.getElementById('formEditDetail');
 
-            form.action = "<?= site_url('sub-kegiatan-detail/file_detail/update/') ?>" + id_file_detail;
+            form.action = "<?= base_url('sub-kegiatan-detail/file_detail/update/') ?>" + id_file_detail;
             document.getElementById('edit_filename').value = filename;
 
             let modal = new bootstrap.Modal(document.getElementById('modalEditDetail'));
@@ -162,7 +162,7 @@
         }
 
         function confirmDelete(id) {
-            document.getElementById("formDelete").action = "<?= site_url('sub-kegiatan-detail/file_detail/delete/'); ?>" + id;
+            document.getElementById("formDelete").action = "<?= base_url('sub-kegiatan-detail/file_detail/delete/'); ?>" + id;
 
             let modalEl = document.getElementById('modalDelete');
             let modal = new bootstrap.Modal(modalEl);

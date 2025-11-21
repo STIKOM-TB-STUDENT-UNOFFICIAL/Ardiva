@@ -26,7 +26,7 @@
                                         <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form method="post" action="<?= site_url('akses/insert'); ?>" enctype="multipart/form-data">
+                                <form method="post" action="<?= base_url('akses/insert'); ?>" enctype="multipart/form-data">
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <label>User ID</label>
@@ -80,7 +80,7 @@
                                         <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form method="post" action="<?= site_url('akses/update'); ?>" enctype="multipart/form-data" id="formEdit">
+                                <form method="post" action="<?= base_url('akses/update'); ?>" enctype="multipart/form-data" id="formEdit">
                                     <div class="modal-body">
                                         <input type="hidden" name="userid" id="e_userid">
                                         <div class="form-group">
@@ -226,7 +226,7 @@
         }
 
         function confirmDelete(id) {
-            document.getElementById("formDelete").action = "<?= site_url('akses/delete/'); ?>" + id;
+            document.getElementById("formDelete").action = "<?= base_url('akses/delete/'); ?>" + id;
 
             let modalEl = document.getElementById('modalDelete');
             let modal = new bootstrap.Modal(modalEl);

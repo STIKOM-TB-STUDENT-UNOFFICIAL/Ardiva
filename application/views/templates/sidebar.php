@@ -4,7 +4,7 @@
             <div
                 class="d-flex justify-content-between align-items-center">
                 <div class="logo">
-                    <a href="index.html">Ardiva</a>
+                    <a href="<?= base_url("/") ?>">Ardiva</a>
                 </div>
                 <div
                     class="theme-toggle d-flex gap-2 align-items-center mt-2">
@@ -80,48 +80,48 @@
 
                     <ul class="submenu">
                         <li class="submenu-item">
-                            <a href="/kegiatan" class="sidebar-link">
+                            <a href="<?=base_url("kegiatan")?>" class="sidebar-link">
                                 <span>Master</span>
                             </a>
                         </li>
                         <li class="submenu-item">
-                            <a href="/sub-kegiatan" class="sidebar-link">
+                            <a href="<?=base_url("/sub-kegiatan") ?>" class="sidebar-link">
                                 <span>Sub Kegiatan</span>
                             </a>
                         </li>
                         <li class="submenu-item">
-                            <a href="/sub-kegiatan-detail" class="sidebar-link">
+                            <a href="<?=base_url("/sub-kegiatan-detail") ?>" class="sidebar-link">
                                 <span>Sub Detail</span>
                             </a>
                         </li>
                     </ul>
                 </li>
                 <li class="sidebar-item ">
-                    <a href="/instrumen" class="sidebar-link">
+                    <a href="<?=base_url("/instrumen") ?>" class="sidebar-link">
                         <i class="bi bi-calendar-week"></i>
                         <span>Instrumen</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="/rekapitulasi" class="sidebar-link">
+                    <a href="<?=base_url("/rekapitulasi") ?>" class="sidebar-link">
                         <i class="bi bi-card-checklist"></i>
                         <span>Rekapitulasi</span>
                     </a>
                 </li>
                 <li class="sidebar-item ">
-                    <a href="/tahun-akademik" class="sidebar-link">
+                    <a href="<?=base_url("/tahun-akademik") ?>" class="sidebar-link">
                         <i class="bi bi-calendar-check"></i>
                         <span>Tahun Akademik</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="/akses" class="sidebar-link">
+                    <a href="<?=base_url("/akses")?>" class="sidebar-link">
                         <i class="bi bi-key"></i>
                         <span>Akses</span>
                     </a>
                 </li>
                 <li class="sidebar-item">
-                    <a href="/logout" class="sidebar-link">
+                    <a href="<?=base_url("/logout")?>" class="sidebar-link">
                         <i class="bi bi-arrow-bar-left"></i>
                         <span>Logout</span>
                     </a>
@@ -132,9 +132,9 @@
     <script>
         const currentPage = window.location.pathname.split("/")[1];
         const links = document.querySelectorAll(".sidebar-item a");
-
+        
         links.forEach(link => {
-            if (link.getAttribute("href").split("/")[1] === currentPage) {
+            if (link.getAttribute("href").replace("<?= base_url() ?>", "").split("/")[0] === currentPage) {
                 link.parentElement.classList.add("active");
                 link.parentElement.parentElement.classList.add("active")
                 link.parentElement.parentElement.parentElement.classList.add("active")

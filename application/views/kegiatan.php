@@ -26,7 +26,7 @@
                                         <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form action="<?= site_url('kegiatan/store'); ?>" method="POST">
+                                <form action="<?= base_url('kegiatan/store'); ?>" method="POST">
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <label>Nama Kegiatan</label>
@@ -58,7 +58,7 @@
                                         <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form action="<?= site_url('kegiatan/update'); ?>" method="POST" id="formEdit">
+                                <form action="<?= base_url('kegiatan/update'); ?>" method="POST" id="formEdit">
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <label>Nama Kegiatan</label>
@@ -144,9 +144,9 @@
     </div>
     <script>
         function editKegiatan(id) {
-            document.getElementById("formEdit").action = "<?= site_url('kegiatan/update/'); ?>" + id;
+            document.getElementById("formEdit").action = "<?= base_url('kegiatan/update/'); ?>" + id;
 
-            fetch("<?= site_url('kegiatan/edit/'); ?>" + id)
+            fetch("<?= base_url('kegiatan/edit/'); ?>" + id)
                 .then(response => response.json())
                 .then(data => {
                     console.log(data)
@@ -158,7 +158,7 @@
         }
 
         function confirmDelete(id) {
-            document.getElementById("formDelete").action = "<?= site_url('kegiatan/delete/'); ?>" + id;
+            document.getElementById("formDelete").action = "<?= base_url('kegiatan/delete/'); ?>" + id;
 
             let modalEl = document.getElementById('modalDelete');
             let modal = new bootstrap.Modal(modalEl);

@@ -25,7 +25,7 @@
                                         <i data-feather="x"></i>
                                     </button>
                                 </div>
-                                <form action="<?= site_url('subkegiatan/store'); ?>" method="POST">
+                                <form action="<?= base_url('subkegiatan/store'); ?>" method="POST">
                                     <div class="modal-body">
                                         <div class="form-group">
                                             <label>Nama Kegiatan</label>
@@ -162,9 +162,9 @@
     </div>
     <script>
         function editSubKegiatan(id) {
-            document.getElementById("formEdit").action = "<?= site_url('subkegiatan/update/'); ?>" + id;
+            document.getElementById("formEdit").action = "<?= base_url('subkegiatan/update/'); ?>" + id;
 
-            fetch("<?= site_url('subkegiatan/edit/'); ?>" + id)
+            fetch("<?= base_url('subkegiatan/edit/'); ?>" + id)
                 .then(response => response.json())
                 .then(data => {
                     document.getElementById("edit_idkegiatan").value = data.idkegiatan;
@@ -176,7 +176,7 @@
                 });
         }
         function confirmDelete(id) {
-            document.getElementById("formDelete").action = "<?= site_url('sub-kegiatan/delete/'); ?>" + id;
+            document.getElementById("formDelete").action = "<?= base_url('sub-kegiatan/delete/'); ?>" + id;
 
             let modalEl = document.getElementById('modalDelete');
             let modal = new bootstrap.Modal(modalEl);

@@ -17,7 +17,7 @@
                     </button>
                     <div class="modal fade text-left modal-borderless" id="modalTambah" tabindex="-1"
                         role="dialog" aria-labelledby="modalTambah" aria-hidden="true">
-                        <form action="<?= site_url('sub-kegiatan-detail/file/store'); ?>" method="post" enctype="multipart/form-data" class="modal-dialog modal-dialog-scrollable" role="document">
+                        <form action="<?= base_url('sub-kegiatan-detail/file/store'); ?>" method="post" enctype="multipart/form-data" class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Tambah Berkas</h5>
@@ -80,7 +80,7 @@
                     </div>
                     <div class="modal fade text-left modal-borderless" id="modalEdit" tabindex="-1"
                         role="dialog" aria-labelledby="modalEdit" aria-hidden="true">
-                        <form action="<?= site_url('kegiatan/update'); ?>" method="POST" id="formEdit" class="modal-dialog modal-dialog-scrollable" role="document">
+                        <form action="<?= base_url('kegiatan/update'); ?>" method="POST" id="formEdit" class="modal-dialog modal-dialog-scrollable" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title">Edit Berkas</h5>
@@ -196,7 +196,7 @@
                                             <td class="text-bold-500"><?= $f->tanggal ?></td>
                                             <td class="text-bold-500"><?= $f->thnakademik ?></td>
                                             <td class="text-bold-500 d-flex gap-1" width="20%">
-                                                <a href="<?= site_url('sub-kegiatan-detail/' . $detail->idsubkegiatan_detail . '/files/' . $f->idfile) ?>" class="btn btn-success">Lihat</a>
+                                                <a href="<?= base_url('sub-kegiatan-detail/' . $detail->idsubkegiatan_detail . '/files/' . $f->idfile) ?>" class="btn btn-success">Lihat</a>
                                                 <button class="btn btn-primary"
                                                     onclick="editFile(
                                                         '<?= $f->idfile ?>',
@@ -223,7 +223,7 @@
     </div>
     <script>
         function editFile(idfile, jenis, topik, deskripsi, tanggal) {
-            document.getElementById('formEdit').action = "<?= site_url('sub-kegiatan-detail/file/update/'); ?>" + idfile;
+            document.getElementById('formEdit').action = "<?= base_url('sub-kegiatan-detail/file/update/'); ?>" + idfile;
             
             document.getElementById('edit_jenis').value = jenis;
             document.getElementById('edit_topik').value = topik;
@@ -235,7 +235,7 @@
         }
 
         function confirmDelete(id) {
-            document.getElementById("formDelete").action = "<?= site_url('sub-kegiatan-detail/file/delete/'); ?>" + id;
+            document.getElementById("formDelete").action = "<?= base_url('sub-kegiatan-detail/file/delete/'); ?>" + id;
 
             let modalEl = document.getElementById('modalDelete');
             let modal = new bootstrap.Modal(modalEl);
