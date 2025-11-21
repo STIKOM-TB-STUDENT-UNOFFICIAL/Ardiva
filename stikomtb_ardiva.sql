@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 21 Nov 2025 pada 03.53
+-- Waktu pembuatan: 21 Nov 2025 pada 11.02
 -- Versi server: 10.4.32-MariaDB
 -- Versi PHP: 8.2.12
 
@@ -39,7 +39,8 @@ CREATE TABLE `instrumen` (
 
 INSERT INTO `instrumen` (`idinstrumen`, `namainstrumen`, `tahun`) VALUES
 (18, 'Test', '2024'),
-(19, 'Test Lagi', '2025');
+(19, 'Test Lagi', '2025'),
+(20, 'budaya mutu', '2025');
 
 -- --------------------------------------------------------
 
@@ -53,14 +54,6 @@ CREATE TABLE `insub_detail` (
   `idsubkegiatan_detail` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
---
--- Dumping data untuk tabel `insub_detail`
---
-
-INSERT INTO `insub_detail` (`idinsub`, `idinstrumen`, `idsubkegiatan_detail`) VALUES
-(99, 18, 12),
-(100, 19, 12);
-
 -- --------------------------------------------------------
 
 --
@@ -72,12 +65,30 @@ CREATE TABLE `kegiatan` (
   `kegiatan` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data untuk tabel `kegiatan`
+-- Struktur dari tabel `login_system`
 --
 
-INSERT INTO `kegiatan` (`idkegiatan`, `kegiatan`) VALUES
-(1, 'Belajar Mengajar');
+CREATE TABLE `login_system` (
+  `userid` varchar(50) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `password` varchar(255) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `nama_lengkap` varchar(100) CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL,
+  `foto` longblob DEFAULT NULL,
+  `level` enum('admin','dosen','mahasiswa') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'mahasiswa',
+  `blokir` enum('Y','N') CHARACTER SET latin1 COLLATE latin1_swedish_ci NOT NULL DEFAULT 'N',
+  `last_login` datetime DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COLLATE=latin1_general_ci;
+
+--
+-- Dumping data untuk tabel `login_system`
+--
+
+INSERT INTO `login_system` (`userid`, `password`, `nama_lengkap`, `foto`, `level`, `blokir`, `last_login`) VALUES
+('0118088603', 'f0233d140392b858011ccfccc0de9de9', 'irfan damanik', NULL, 'dosen', 'N', NULL),
+('irfan', '21232f297a57a5a743894a0e4a801fc3', 'irfan damanik', NULL, 'admin', 'N', '2025-11-21 08:55:27'),
+('admin', '21232f297a57a5a743894a0e4a801fc3', 'admin', NULL, 'admin', 'N', '2025-11-21 10:07:51');
 
 -- --------------------------------------------------------
 
@@ -120,13 +131,6 @@ CREATE TABLE `subkegiatan` (
   `namasubkegiatan` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
---
--- Dumping data untuk tabel `subkegiatan`
---
-
-INSERT INTO `subkegiatan` (`idsubkegiatan`, `idkegiatan`, `namasubkegiatan`) VALUES
-(1, 1, 'PJJ');
-
 -- --------------------------------------------------------
 
 --
@@ -138,13 +142,6 @@ CREATE TABLE `subkegiatan_detail` (
   `idsubkegiatan` int(11) DEFAULT NULL,
   `namasubkegiatan_detail` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
-
---
--- Dumping data untuk tabel `subkegiatan_detail`
---
-
-INSERT INTO `subkegiatan_detail` (`idsubkegiatan_detail`, `idsubkegiatan`, `namasubkegiatan_detail`) VALUES
-(12, 1, 'sdffsdfdsffsdf');
 
 -- --------------------------------------------------------
 
@@ -189,6 +186,12 @@ ALTER TABLE `kegiatan`
   ADD PRIMARY KEY (`idkegiatan`);
 
 --
+-- Indeks untuk tabel `login_system`
+--
+ALTER TABLE `login_system`
+  ADD PRIMARY KEY (`userid`);
+
+--
 -- Indeks untuk tabel `m_file`
 --
 ALTER TABLE `m_file`
@@ -230,43 +233,43 @@ ALTER TABLE `tahun_akademik`
 -- AUTO_INCREMENT untuk tabel `instrumen`
 --
 ALTER TABLE `instrumen`
-  MODIFY `idinstrumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `idinstrumen` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT untuk tabel `insub_detail`
 --
 ALTER TABLE `insub_detail`
-  MODIFY `idinsub` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
+  MODIFY `idinsub` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=109;
 
 --
 -- AUTO_INCREMENT untuk tabel `kegiatan`
 --
 ALTER TABLE `kegiatan`
-  MODIFY `idkegiatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idkegiatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `m_file`
 --
 ALTER TABLE `m_file`
-  MODIFY `idfile` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `idfile` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `m_file_detail`
 --
 ALTER TABLE `m_file_detail`
-  MODIFY `id_file_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `id_file_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT untuk tabel `subkegiatan`
 --
 ALTER TABLE `subkegiatan`
-  MODIFY `idsubkegiatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idsubkegiatan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT untuk tabel `subkegiatan_detail`
 --
 ALTER TABLE `subkegiatan_detail`
-  MODIFY `idsubkegiatan_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `idsubkegiatan_detail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
 
 --
 -- AUTO_INCREMENT untuk tabel `tahun_akademik`
