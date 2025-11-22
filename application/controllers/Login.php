@@ -32,12 +32,22 @@ class Login extends CI_Controller {
         ])->row();
 
         if ($user) {
+            $this->db->select('hak_akses.*, prodi.nama_prodi');
+            $this->db->from('hak_akses');
+            $this->db->join('prodi', 'prodi.kode_prodi = hak_akses.kode_prodi', 'left');
+            $this->db->where('hak_akses.userid', $user->userid);
+            $akses = $this->db->get()->row();
+
+            $kode_prodi = $akses ? $akses->kode_prodi : null;
+            $nama_prodi = $akses ? $akses->nama_prodi : null;
 
             $this->session->set_userdata([
                 'logged_in'     => TRUE,
                 'userid'        => $user->userid,
                 'nama_lengkap'  => $user->nama_lengkap,
-                'level'         => $user->level
+                'level'         => $user->level,
+                'kode_prodi'   => $kode_prodi,
+                'nama_prodi'   => $nama_prodi
             ]);
 
             $this->db->where('userid', $user->userid)

@@ -9,24 +9,40 @@ class Subkegiatan_detail extends CI_Controller
         $this->load->model('Subkegiatan_detail_model');
         $this->load->model('M_file_model');
         $this->load->model('M_file_detail_model');
+        $this->load->model('Tahun_akademik_model');
         $this->load->database();
+    }
+
+    private function check_access($prodi_data)
+    {
+        $user_prodi = $this->session->userdata('kode_prodi');
+
+        if ($user_prodi == 'UV') return true;
+        if ($prodi_data == 'UV') return false;
+        return $user_prodi == $prodi_data;
+    }
+
+    private function get_prodi_detail($idsubdetail)
+    {
+        $row = $this->db
+            ->select('sd.kode_prodi')
+            ->from('subkegiatan_detail sd')
+            ->where('sd.idsubkegiatan_detail', $idsubdetail)
+            ->get()->row();
+
+        return $row ? $row->kode_prodi : null;
     }
 
     private function get_tahun_akademik()
     {
-        $cek = $this->db->get('tahun_akademik')->num_rows();
-
-        if ($cek == 0) {
-            $tahun = date('Y') . "/" . (date('Y') + 1);
-            $this->db->insert('tahun_akademik', ['tahun' => $tahun]);
-        }
-
-        $row = $this->db->get('tahun_akademik')->row();
-        return $row->tahun;
+        $user_prodi = $this->session->userdata('kode_prodi');
+        $this->Tahun_akademik_model->cek_default($user_prodi);
+        return $this->Tahun_akademik_model->get_aktif($user_prodi)->tahun;
     }
 
     public function index($offset = null)
     {
+        $kode_prodi = $this->session->userdata('kode_prodi');
         if ($this->uri->segment(3) == null) {
             redirect("/sub-kegiatan-detail/page/0");
         }
@@ -42,7 +58,7 @@ class Subkegiatan_detail extends CI_Controller
 
         $this->load->library('pagination');
 
-        $config['base_url'] = site_url('sub-kegiatan-detail/page');
+        $config['base_url'] = base_url('sub-kegiatan-detail/page');
         $config['total_rows'] = $this->Subkegiatan_detail_model->count_all();
         $config['per_page'] = 10;
         $config['uri_segment'] = 3;
@@ -67,8 +83,18 @@ class Subkegiatan_detail extends CI_Controller
             $config['per_page'],
             $offset,
             $q,
-            $instrumen
+            $instrumen,
+            $kode_prodi
         );
+
+        $is_uv = ($kode_prodi == 'UV');
+        if ($is_uv) {
+            foreach ($data['list'] as $s) {
+                $s->namasubkegiatan = $s->kode_prodi . " - " . $s->namasubkegiatan;
+            }
+        }
+
+        $data["user_prodi"] = $this->session->userdata('kode_prodi');
 
         $this->db->select('subkegiatan.*, kegiatan.kegiatan AS nama_kegiatan');
         $this->db->from('subkegiatan');
@@ -102,18 +128,24 @@ class Subkegiatan_detail extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function create()
-    {
-        $data['subkegiatan'] = $this->db->get('subkegiatan')->result();
-        $data['instrumen']   = $this->db->get('instrumen')->result();
-        $this->load->view('subkegiatan_detail/create', $data);
-    }
-
     public function store()
     {
+        $user_prodi = $this->session->userdata('kode_prodi');
+
+        if ($user_prodi != 'UV') {
+            $idSub = $this->input->post('idsubkegiatan');
+            $prodiSub = $this->db->get_where('subkegiatan', ['idsubkegiatan' => $idSub])->row()->kode_prodi;
+
+            if ($prodiSub != $user_prodi) {
+                $this->session->set_flashdata('error', 'Anda tidak memiliki izin menambah sub kegiatan detail ini.');
+                redirect('sub-kegiatan-detail');
+            }
+        }
+
         $insertData = [
             'idsubkegiatan' => $this->input->post('idsubkegiatan'),
             'namasubkegiatan_detail' => $this->input->post('namasubkegiatan_detail'),
+            'kode_prodi' => $user_prodi
         ];
 
         $idSubDetail = $this->Subkegiatan_detail_model->insert($insertData);
@@ -140,6 +172,13 @@ class Subkegiatan_detail extends CI_Controller
 
     public function update($id)
     {
+        $prodiData = $this->get_prodi_detail($id);
+
+        if (!$this->check_access($prodiData)) {
+            $this->session->set_flashdata('error', 'Anda tidak memiliki izin mengubah data UV.');
+            redirect('sub-kegiatan-detail');
+        }
+
         $updateData = [
             'idsubkegiatan'         => $this->input->post('idsubkegiatan'),
             'namasubkegiatan_detail' => $this->input->post('namasubkegiatan_detail')
@@ -159,6 +198,13 @@ class Subkegiatan_detail extends CI_Controller
 
     public function delete($id)
     {
+        $prodiData = $this->get_prodi_detail($id);
+
+        if (!$this->check_access($prodiData)) {
+            $this->session->set_flashdata('error', 'Anda tidak memiliki izin menghapus data UV.');
+            redirect('sub-kegiatan-detail');
+        }
+
         $this->db->trans_start();
 
         $this->Subkegiatan_detail_model->delete_file_detail_by_sub($id);
@@ -173,6 +219,14 @@ class Subkegiatan_detail extends CI_Controller
 
     public function store_file()
     {
+        $idsubdetail = $this->input->post('idsubkegiatan_detail');
+        $prodiData = $this->get_prodi_detail($idsubdetail);
+
+        if (!$this->check_access($prodiData)) {
+            $this->session->set_flashdata('error', 'Anda tidak memiliki izin menambah file pada data UV.');
+            redirect('sub-kegiatan-detail/' . $idsubdetail);
+        }
+
         $tahun = $this->get_tahun_akademik();
 
         $dataInsert = [
@@ -181,7 +235,8 @@ class Subkegiatan_detail extends CI_Controller
             'topik' => $this->input->post('topik'),
             'deskripsi' => $this->input->post('deskripsi'),
             'tanggal' => $this->input->post('tanggal'),
-            'thnakademik' => $tahun
+            'thnakademik' => $tahun,
+            'kode_prodi' => $this->session->userdata('kode_prodi')
         ];
 
         $id_m_file = $this->M_file_model->insert($dataInsert);
@@ -198,7 +253,8 @@ class Subkegiatan_detail extends CI_Controller
                 $dataDetail = [
                     'id_m_file' => $id_m_file,
                     'filename' => $filename,
-                    'file' => $filedata
+                    'file' => $filedata,
+                    'kode_prodi' => $this->session->userdata('kode_prodi')
                 ];
 
                 $this->M_file_detail_model->insert($dataDetail);
@@ -211,12 +267,20 @@ class Subkegiatan_detail extends CI_Controller
     public function update_file($idfile)
     {
         $file = $this->M_file_model->get_by_id($idfile);
+        $prodiData = $this->get_prodi_detail($file->idsubkegiatan_detail);
+
+        if (!$this->check_access($prodiData)) {
+            $this->session->set_flashdata('error', 'Anda tidak memiliki izin mengubah file UV.');
+            redirect('sub-kegiatan-detail/' . $file->idsubkegiatan_detail);
+        }
+
         $dataUpdate = [
             'jenis' => $this->input->post('jenis'),
             'topik' => $this->input->post('topik'),
             'deskripsi' => $this->input->post('deskripsi'),
             'tanggal' => $this->input->post('tanggal'),
         ];
+
         $this->M_file_model->update($idfile, $dataUpdate);
 
         redirect('sub-kegiatan-detail/' . $file->idsubkegiatan_detail);
@@ -225,6 +289,14 @@ class Subkegiatan_detail extends CI_Controller
     public function delete_file($idfile)
     {
         $file = $this->M_file_model->get_by_id($idfile);
+        $prodiData = $this->get_prodi_detail($file->idsubkegiatan_detail);
+
+        if (!$this->check_access($prodiData)) {
+            $this->session->set_flashdata('error', 'Anda tidak memiliki izin menghapus file UV.');
+            redirect('sub-kegiatan-detail/' . $file->idsubkegiatan_detail);
+        }
+
+
         $this->M_file_detail_model->delete_by_master($idfile);
         $this->M_file_model->delete($idfile);
 

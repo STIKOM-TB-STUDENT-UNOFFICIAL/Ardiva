@@ -1,26 +1,44 @@
 <?php
-class M_file_model extends CI_Model {
+class M_file_model extends CI_Model
+{
 
-    public function get_by_subdetail($idsub) {
+    public function get_by_subdetail($idsub)
+    {
         $this->db->where('idsubkegiatan_detail', $idsub);
         return $this->db->get('m_file')->result();
     }
 
-    public function get_by_id($idfile) {
+    public function get_by_id($idfile)
+    {
         return $this->db->get_where('m_file', ['idfile' => $idfile])->row();
     }
 
-    public function insert($data) {
+    public function get_by_id_prodi($idfile, $prodi)
+    {
+        $this->db->where('idfile', $idfile);
+
+        $this->db->group_start();
+        $this->db->where('kode_prodi', $prodi);
+        $this->db->or_where('kode_prodi', 'UV');
+        $this->db->group_end();
+
+        return $this->db->get('m_file')->row();
+    }
+
+    public function insert($data)
+    {
         $this->db->insert('m_file', $data);
         return $this->db->insert_id();
     }
 
-    public function update($idfile, $data) {
+    public function update($idfile, $data)
+    {
         $this->db->where('idfile', $idfile);
         return $this->db->update('m_file', $data);
     }
 
-    public function delete($idfile) {
+    public function delete($idfile)
+    {
         $this->db->where('idfile', $idfile);
         return $this->db->delete('m_file');
     }

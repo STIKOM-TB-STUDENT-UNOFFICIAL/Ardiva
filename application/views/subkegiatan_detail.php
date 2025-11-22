@@ -22,6 +22,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
+                                    <input type="hidden" name="kode_prodi" value="<?= $user_prodi ?>">
                                     <div class="form-group">
                                         <label>Sub Kegiatan</label>
                                         <select name="idsubkegiatan" class="form-control" required>
@@ -57,7 +58,7 @@
                         <form id="formEdit" class="modal-dialog modal-dialog-scrollable" action="<?= site_url('sub-kegiatan-detail/store'); ?>" method="POST">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">Tambah Sub Kegiatan Detail</h5>
+                                    <h5 class="modal-title">Edit Sub Kegiatan Detail</h5>
                                     <button type="button" class="close rounded-pill" data-bs-dismiss="modal" aria-label="Close">
                                         <i data-feather="x"></i>
                                     </button>
@@ -239,7 +240,7 @@
                 });
         }
 
-        function confirmDelete(id) {
+        function confirmDelete(id) {    
             document.getElementById("formDelete").action = "<?= site_url('sub-kegiatan-detail/delete/'); ?>" + id;
 
             let modalEl = document.getElementById('modalDelete');

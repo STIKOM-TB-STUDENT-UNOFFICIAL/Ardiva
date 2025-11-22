@@ -10,8 +10,16 @@ class Kegiatan_model extends CI_Model {
         $this->load->database();
     }
 
-    public function getAll()
+    public function getByProdi($kode_prodi, $is_uv)
     {
+        if ($is_uv) {
+            $this->db->select('kegiatan.*, prodi.kode_prodi');
+            $this->db->from('kegiatan');
+            $this->db->join('prodi', 'prodi.kode_prodi = kegiatan.kode_prodi', 'left');
+            return $this->db->get()->result();
+        }
+
+        $this->db->where("(kode_prodi = '$kode_prodi' OR kode_prodi = 'UV')");
         return $this->db->get($this->table)->result();
     }
 

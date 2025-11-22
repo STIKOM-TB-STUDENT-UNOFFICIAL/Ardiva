@@ -27,6 +27,7 @@
                                 </div>
                                 <form action="<?= base_url('subkegiatan/store'); ?>" method="POST">
                                     <div class="modal-body">
+                                        <input type="hidden" name="kode_prodi" value="<?= $kode_prodi ?>">
                                         <div class="form-group">
                                             <label>Nama Kegiatan</label>
                                             <select name="idkegiatan" class="form-control" required>

@@ -1,10 +1,12 @@
 <?php
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
 #[AllowDynamicProperties]
-class FileDetail extends CI_Controller {
+class FileDetail extends CI_Controller
+{
 
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct();
         $this->load->model('Subkegiatan_detail_model');
         $this->load->model('M_file_detail_model');
@@ -14,12 +16,16 @@ class FileDetail extends CI_Controller {
 
     public function index($idsub, $idfile)
     {
-        $data['filemaster'] = $this->M_file_model->get_by_id($idfile);
+        $kode_prodi = $this->session->userdata('kode_prodi');
+
+        $is_uv = ($kode_prodi == 'UV');
+
+        $data['filemaster'] = $is_uv ? $this->M_file_model->get_by_id($idfile) : $this->M_file_model->get_by_id_prodi($idfile, $kode_prodi);
         if (!$data['filemaster']) {
             show_404();
         }
 
-        $data['detail_list'] = $this->M_file_detail_model->get_by_file($idfile);
+        $data['detail_list'] = $is_uv ? $this->M_file_detail_model->get_by_file($idfile) : $this->M_file_detail_model->get_by_file_prodi($idfile, $kode_prodi);
         $data['idsub'] = $idsub;
         $data['idfile'] = $idfile;
         $data['detail'] = $this->Subkegiatan_detail_model->get_by_id($idsub);
@@ -37,10 +43,17 @@ class FileDetail extends CI_Controller {
             show_404();
         }
 
+        $kode_prodi = $this->session->userdata('kode_prodi');
+
+        if ($kode_prodi != "UV" && $master->kode_prodi != $kode_prodi) {
+            $this->session->set_flashdata('error', 'Anda tidak boleh membuat kegiatan Universal.');
+            redirect('sub-kegiatan-detail/' . $idsub . '/files/' . $idfile);
+        }
+
         if (!empty($_FILES['file']['name'][0])) {
             $rows = [];
             $count = count($_FILES['file']['name']);
-            for ($i=0; $i < $count; $i++) {
+            for ($i = 0; $i < $count; $i++) {
                 if (is_uploaded_file($_FILES['file']['tmp_name'][$i])) {
                     $filename = $_FILES['file']['name'][$i];
                     $filedata = file_get_contents($_FILES['file']['tmp_name'][$i]);
@@ -48,7 +61,8 @@ class FileDetail extends CI_Controller {
                     $rows[] = [
                         'id_m_file' => $idfile,
                         'filename'  => $filename,
-                        'file'      => $filedata
+                        'file'      => $filedata,
+                        'kode_prodi' => $kode_prodi
                     ];
                 }
             }
@@ -58,7 +72,7 @@ class FileDetail extends CI_Controller {
             }
         }
 
-        redirect('sub-kegiatan-detail/'.$idsub.'/files/'.$idfile);
+        redirect('sub-kegiatan-detail/' . $idsub . '/files/' . $idfile);
     }
 
     public function update($id_file_detail)
@@ -66,6 +80,14 @@ class FileDetail extends CI_Controller {
         $detail = $this->M_file_detail_model->get_detail($id_file_detail);
         if (!$detail) {
             show_404();
+        }
+        $master = $this->M_file_model->get_by_id($detail->id_m_file);
+
+        $kode_prodi = $this->session->userdata('kode_prodi');
+
+        if ($kode_prodi != "UV" && $master->kode_prodi != $kode_prodi) {
+            $this->session->set_flashdata('error', 'Anda tidak boleh membuat kegiatan Universal.');
+            redirect('sub-kegiatan-detail/' . $master->idsubkegiatan_detail . '/files/' . $master->idfile);
         }
 
         $update = [];
@@ -85,8 +107,7 @@ class FileDetail extends CI_Controller {
             $this->M_file_detail_model->update($id_file_detail, $update);
         }
 
-        $master = $this->M_file_model->get_by_id($detail->id_m_file);
-        redirect('sub-kegiatan-detail/'.$master->idsubkegiatan_detail.'/files/'.$master->idfile);
+        redirect('sub-kegiatan-detail/' . $master->idsubkegiatan_detail . '/files/' . $master->idfile);
     }
 
     public function delete($id_file_detail)
@@ -101,7 +122,7 @@ class FileDetail extends CI_Controller {
 
         $this->M_file_detail_model->delete($id_file_detail);
 
-        redirect('sub-kegiatan-detail/'.$idsub.'/files/'.$master->idfile);
+        redirect('sub-kegiatan-detail/' . $idsub . '/files/' . $master->idfile);
     }
 
     public function view($id_file_detail)
@@ -113,11 +134,11 @@ class FileDetail extends CI_Controller {
 
         $ext = strtolower(pathinfo($file->filename, PATHINFO_EXTENSION));
 
-        if (in_array($ext, ['pdf','jpg','jpeg','png'])) {
+        if (in_array($ext, ['pdf', 'jpg', 'jpeg', 'png'])) {
 
             $ctype = 'application/octet-stream';
             if ($ext === 'pdf') $ctype = 'application/pdf';
-            if (in_array($ext, ['jpg','jpeg'])) $ctype = 'image/jpeg';
+            if (in_array($ext, ['jpg', 'jpeg'])) $ctype = 'image/jpeg';
             if ($ext === 'png') $ctype = 'image/png';
 
             header("Content-Type: {$ctype}");

@@ -1,7 +1,7 @@
 <?php
 class Subkegiatan_detail_model extends CI_Model
 {
-    public function get_all($limit, $offset, $q = null, $instrumen = null)
+    public function get_all($limit, $offset, $q = null, $instrumen = null, $kode_prodi = "UV")
     {
         $this->db->select('sd.*, s.namasubkegiatan');
         $this->db->from('subkegiatan_detail sd');
@@ -17,6 +17,11 @@ class Subkegiatan_detail_model extends CI_Model
         if (!empty($instrumen)) {
             $this->db->join('insub_detail ins', 'ins.idsubkegiatan_detail = sd.idsubkegiatan_detail');
             $this->db->where('ins.idinstrumen', $instrumen);
+        }
+
+        if ($kode_prodi != "UV") {
+            $this->db->where('sd.kode_prodi', $kode_prodi);
+            $this->db->or_where('sd.kode_prodi', 'UV');
         }
 
         $this->db->limit($limit, $offset);
