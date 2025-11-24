@@ -26,6 +26,8 @@ class Akses extends CI_Controller
 
         $data['level'] = $level;
         $data['users'] = $this->Akses_model->getAll();
+        $data['prodi'] = $this->db->get('prodi')->result();
+
         $this->load->view('templates/header');
         $this->load->view('templates/sidebar');
         $this->load->view('akses', $data);
@@ -50,6 +52,10 @@ class Akses extends CI_Controller
         ];
 
         $this->Akses_model->insert($data);
+        $this->db->insert("hak_akses", [
+            'userid' => $this->input->post('userid'),
+            'kode_prodi' => $this->input->post('kode_prodi')
+        ]);
 
         redirect('akses');
     }
@@ -78,11 +84,28 @@ class Akses extends CI_Controller
 
         $this->Akses_model->update($userid, $data);
 
+        $hak_akses = $this->db->get_where('hak_akses', ['userid' => $userid])->row();
+
+        if(!$hak_akses){
+            $this->db->insert('hak_akses', ['userid' => $userid, 'kode_prodi' => $this->input->post('kode_prodi')]);
+        }
+        else{
+            $this->db->where('userid', $userid);
+            $this->db->update('hak_akses', ['kode_prodi' => $this->input->post('kode_prodi')]);
+        }
+
         redirect('akses');
     }
 
     public function delete($userid)
     {
+        $hak_akses = $this->db->get_where('hak_akses', ['userid' => $userid])->row();
+
+        if($hak_akses){
+            $this->db->where('userid', $userid);
+            $this->db->delete('hak_akses');
+        }
+
         $this->Akses_model->delete($userid);
         redirect('akses');
     }

@@ -111,5 +111,7 @@ $route['rekapitulasi/file/(:num)'] = 'explorer/file/$1';
 $route['rekapitulasi/file_detail/(:num)'] = 'explorer/file_detail/$1';
 $route['rekapitulasi/open_file/(:num)'] = 'explorer/open_file/$1';
 
+$route['laporan'] = 'laporan/index';
+
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

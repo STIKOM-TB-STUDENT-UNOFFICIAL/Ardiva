@@ -99,6 +99,10 @@ class Subkegiatan_detail extends CI_Controller
         $this->db->select('subkegiatan.*, kegiatan.kegiatan AS nama_kegiatan');
         $this->db->from('subkegiatan');
         $this->db->join('kegiatan', 'kegiatan.idkegiatan = subkegiatan.idkegiatan', 'left');
+        
+        if($data["user_prodi"] != "UV"){
+            $this->db->where('subkegiatan.kode_prodi', $data["user_prodi"]);
+        }
 
         $data['subkegiatan'] = $this->db->get()->result();
         $data['instrumen']   = $this->db->get('instrumen')->result();
@@ -145,7 +149,7 @@ class Subkegiatan_detail extends CI_Controller
         $insertData = [
             'idsubkegiatan' => $this->input->post('idsubkegiatan'),
             'namasubkegiatan_detail' => $this->input->post('namasubkegiatan_detail'),
-            'kode_prodi' => $user_prodi
+            'kode_prodi' => $this->db->get_where('subkegiatan', ['idsubkegiatan' => $this->input->post('idsubkegiatan')])->row()->kode_prodi
         ];
 
         $idSubDetail = $this->Subkegiatan_detail_model->insert($insertData);

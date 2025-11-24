@@ -103,6 +103,12 @@
                     </a>
                 </li>
                 <li class="sidebar-item">
+                    <a href="<?=base_url("/laporan") ?>" class="sidebar-link">
+                        <i class="bi bi-card-checklist"></i>
+                        <span>Laporan</span>
+                    </a>
+                </li>
+                <li class="sidebar-item">
                     <a href="<?=base_url("/rekapitulasi") ?>" class="sidebar-link">
                         <i class="bi bi-card-checklist"></i>
                         <span>Rekapitulasi</span>

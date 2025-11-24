@@ -51,6 +51,14 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
+                                            <label>Prodi</label>
+                                            <select name="kode_prodi" class="form-control mb-2">
+                                                <?php foreach ($prodi as $p): ?>
+                                                    <option value="<?= $p->kode_prodi ?>"><?= $p->nama_prodi ?></option>
+                                                <?php endforeach ?>
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
                                             <label>Foto</label>
                                             <input type="file" name="foto" class="form-control mb-2">
                                         </div>
@@ -100,15 +108,23 @@
                                             </select>
                                         </div>
                                         <div class="form-group">
-                                            <label>Blokir</label>
-                                            <select name="blokir" id="e_blokir" class="form-control mb-2">
-                                                <option value="N">Tidak</option>
-                                                <option value="Y">Ya</option>
+                                            <label>Prodi</label>
+                                            <select name="kode_prodi" class="form-control mb-2" id="e_prodi">
+                                                <?php foreach ($prodi as $p): ?>
+                                                    <option value="<?= $p->kode_prodi ?>"><?= $p->nama_prodi ?></option>
+                                                <?php endforeach ?>
                                             </select>
                                         </div>
                                         <div class="form-group">
                                             <label>Foto</label>
                                             <input type="file" name="foto" class="form-control mb-2">
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Blokir</label>
+                                            <select name="blokir" id="e_blokir" class="form-control mb-2">
+                                                <option value="N">Tidak</option>
+                                                <option value="Y">Ya</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -166,6 +182,7 @@
                                     <th>Foto</th>
                                     <th>Level</th>
                                     <th>Blokir</th>
+                                    <th>Prodi</th>
                                     <th>Last Login</th>
                                     <th>Aksi</th>
                                 </tr>
@@ -186,6 +203,7 @@
                                         </td>
                                         <td class="text-bold"><?= $u->level; ?></td>
                                         <td class="text-bold"><?= $u->blokir; ?></td>
+                                        <td class="text-bold"><?= $u->nama_prodi; ?></td>
                                         <td class="text-bold"><?= $u->last_login; ?></td>
                                         <td class="text-bold">
                                             <?php if (
@@ -196,7 +214,7 @@
                                                     onclick="editUser('<?= $u->userid ?>',
                                                         '<?= $u->nama_lengkap ?>',
                                                         '<?= $u->level ?>',
-                                                        '<?= $u->blokir ?>')"
+                                                        '<?= $u->blokir ?>', '<?= $u->kode_prodi ?>')"
                                                     data-bs-toggle="modal" data-bs-target="#modalEdit">
                                                     Edit
                                                 </button>
@@ -218,11 +236,12 @@
         </div>
     </div>
     <script>
-        function editUser(userid, nama, level, blokir) {
+        function editUser(userid, nama, level, blokir, prodi) {
             document.getElementById('e_userid').value = userid;
             document.getElementById('e_nama').value = nama;
             document.getElementById('e_level').value = level;
             document.getElementById('e_blokir').value = blokir;
+            document.getElementById('e_prodi').value = prodi;
         }
 
         function confirmDelete(id) {

@@ -7,12 +7,20 @@ class Akses_model extends CI_Model {
 
     public function getAll()
     {
-        return $this->db->get($this->table)->result();
+        $this->db->select("$this->table.*, hak_akses.kode_prodi, prodi.nama_prodi");
+        $this->db->from("$this->table");
+        $this->db->join("hak_akses", "hak_akses.userid = $this->table.userid", "left");
+        $this->db->join("prodi", "prodi.kode_prodi = hak_akses.kode_prodi", "left");
+        $this->db->order_by("$this->table.nama_lengkap", "ASC");
+
+        $query = $this->db->get();
+
+        return $query->result();
     }
 
     public function insert($data)
     {
-        return $this->db->insert($this->table, $data);
+        $this->db->insert($this->table, $data);
     }
 
     public function getById($userid)

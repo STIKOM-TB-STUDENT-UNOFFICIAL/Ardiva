@@ -39,8 +39,11 @@ class Explorer extends CI_Controller {
         $filename = $file->filename;
         $ext = pathinfo($filename, PATHINFO_EXTENSION);
 
-        if (in_array(strtolower($ext), ['png','jpg','jpeg','gif','pdf'])) {
+        if (in_array(strtolower($ext), ['pdf'])) {
             header("Content-type: application/pdf");
+            echo $file->file;
+        } else if (in_array(strtolower($ext), ['png','jpg','jpeg','gif'])) {
+            header("Content-type: image/$ext");
             echo $file->file;
         } else {
             header('Content-Disposition: attachment; filename="'.$filename.'"');
